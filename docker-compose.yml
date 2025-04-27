@@ -1,0 +1,8 @@
+# this file is just to make it easier to build the container to then use in k8s -> docker compose build
+
+services:
+   app:
+    build:
+      context: .
+      dockerfile: ./src/Proxy/Dockerfile
+    image: dynamicapiproxysample/proxy:latest

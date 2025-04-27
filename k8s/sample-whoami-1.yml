@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample-whoami-deployment-1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-whoami-1
+  template:
+    metadata:
+      labels:
+        app: sample-whoami-1
+    spec:
+      containers:
+      - name: whoami
+        image: traefik/whoami:latest
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: "0.5"
+            memory: "128Mi"
+          requests:
+            cpu: "0.1"
+            memory: "32Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-whoami-service-1
+  annotations:
+    dynamicapiproxysample/config: |
+      routes:
+       api-route:
+         path: /sample-whoami-1/api/{**rest}
+         rewritePath: /api/{**rest}
+       another-route:
+         path: /sample-whoami-1/another/{**rest}
+         rewritePath: /data/{**rest}
+spec:
+  type: LoadBalancer
+  selector:
+    app: sample-whoami-1
+  ports:
+    - protocol: TCP
+      port: 6060
+      targetPort: 80
