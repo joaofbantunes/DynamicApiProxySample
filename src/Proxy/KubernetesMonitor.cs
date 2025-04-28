@@ -10,7 +10,7 @@ namespace Proxy;
 public class KubernetesMonitor(InMemoryConfigProvider proxConfigProvider, ILogger<KubernetesMonitor> logger)
     : BackgroundService
 {
-    private readonly IDeserializer _deserializer = new DeserializerBuilder()
+    private readonly IDeserializer _deserializer = new StaticDeserializerBuilder(new YamlStaticContext())
         .WithNamingConvention(CamelCaseNamingConvention.Instance)
         .Build();
 

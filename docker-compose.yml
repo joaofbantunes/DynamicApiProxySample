@@ -5,4 +5,5 @@ services:
     build:
       context: .
       dockerfile: ./src/Proxy/Dockerfile
+      #dockerfile: ./src/Proxy/Dockerfile.aot # doesn't work yet, as the Kubernetes client for NativeAOT only has a subset of the features, and it's missing the watch we need here
     image: dynamicapiproxysample/proxy:latest
